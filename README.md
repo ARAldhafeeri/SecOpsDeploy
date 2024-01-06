@@ -1,6 +1,7 @@
 # SecOpsDeploy
 The following solution utlize opensource projects such as nginx, mod security, Grafana Prometheus to apply resilient security to deployed web apps. 
-
+![screen shot](./screenshots/first.png)
+![screen shot](./screenshots/second.png)
 ## Architecture
 
 ![Architecture](./architecture.png)
@@ -110,4 +111,4 @@ https://github.com/coreruleset/coreruleset.git
     ```
 
 
-
+important

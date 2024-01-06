@@ -41,9 +41,7 @@ RUN ORIGINAL_CONFIG=$(nginx -V 2>&1 | sed -n -e 's/^.*arguments: //p') \
 RUN rm -rf /etc/nginx/nginx.conf /etc/nginx/conf.d
 COPY ./conf/nginx.conf /etc/nginx/
 
-
+RUN ln -sf /dev/stdout /var/log/modsec_audit.log
 EXPOSE 80
-
-CMD ["nginx", "-t"]
 
 CMD ["nginx", "-g", "daemon off;"]

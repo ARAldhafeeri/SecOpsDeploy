@@ -11,33 +11,30 @@ services:
     depends_on:
       - prometheus
       - grafana
+    volumes:
+      - "./conf/modsec/:/etc/nginx/modsec/"
+      - "./conf/conf.d/:/etc/nginx/conf.d/"
     networks:
       - monitoring
-    labels:
-      - "com.docker.compose.service=nginx"
-      - "com.docker.compose.project=secopsdeploy"
     logging:
       driver: loki
       options:
         loki-url: http://localhost:3100/loki/api/v1/push
-        loki-external-labels: job=nginx,owner=admin,environment=development
-    volumes:
-      - "./conf/modsec/:/etc/nginx/modsec/"
-      - "./conf/conf.d/:/etc/nginx/conf.d/"
+        loki-external-labels: job=nginx
 
 
   loki:
     container_name: loki
-    image: grafana/loki:2.0.0
+    image: grafana/loki:2.3.0
     ports:
       - "3100:3100"
-    command: -config.file=/etc/loki/local-config.yaml
     depends_on:
       - nginx
+    volumes:
+    - ./loki/local.yml:/etc/loki/local-config.yml
+    command: -config.file=/etc/loki/local-config.yml
     networks:
       - monitoring
-    volumes:
-    - ./loki/local.yaml:/etc/loki/local-config.yaml
 
   node_exporter:
     image: prom/node-exporter:latest
@@ -71,25 +68,22 @@ services:
       - node_exporter
     networks:
       - monitoring
-    logging:
-      driver: loki
-      options:
-        loki-url: http://localhost:3100/loki/api/v1/push
-        loki-external-labels: job=dockerlogs,owner=docker,environment=development
- 
+
   promtail:
-    image: grafana/promtail:2.0.1
+    image: grafana/promtail:2.3.0
     container_name: promtail
     user: root
     volumes:
-      - ./log:/var/log/test
+      - /var/log:/var/log
       - /var/log/system.log:/var/log/root/system.log
-      - ./port/local.yaml:/etc/config/promtail-local-config.yaml
+      - ./port/local.yml:/etc/config/promtail-local-config.yml
     entrypoint:
       - /usr/bin/promtail
-      - -config.file=/etc/config/promtail-local-config.yaml
+      - -config.file=/etc/config/promtail-local-config.yml
     ports:
       - "9080:9080"
+    networks:
+      - monitoring
 
   grafana:
     image:  grafana/grafana:latest
@@ -103,10 +97,10 @@ services:
     restart: always
     depends_on:
       - prometheus
-    networks:
-      - monitoring
     volumes:
       - grafana_data:/var/lib/grafana
+    networks:
+      - monitoring
 
 
 networks:
