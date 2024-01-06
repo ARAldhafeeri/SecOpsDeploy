@@ -71,7 +71,10 @@ clients:
 ### mod security configuration
 - modsecurity.conf : configure mod security here
 - main.conf : configure mod security rules here
-- conf/oswap_crs : add git clone of oswap crs 
+- conf/oswap_crs : clone repository checkout inside /conf/modsec, checkout  v3/master and rename root folder to oswap_crs
+```sh
+https://github.com/coreruleset/coreruleset.git
+```
 
 
 ## Prerequisites
@@ -105,3 +108,4 @@ clients:
     ```sh
     https://grafana.com/grafana/dashboards/<TBD>
     ```
+

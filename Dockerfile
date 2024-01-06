@@ -41,8 +41,6 @@ RUN ORIGINAL_CONFIG=$(nginx -V 2>&1 | sed -n -e 's/^.*arguments: //p') \
 RUN rm -rf /etc/nginx/nginx.conf /etc/nginx/conf.d
 COPY ./conf/nginx.conf /etc/nginx/
 
-# Configuration for when starting the container
-WORKDIR /etc/nginx/
 
 EXPOSE 80
 
