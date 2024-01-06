@@ -62,6 +62,17 @@ clients:
 ```
 
 
+## configuration 
+
+### nginx configuration
+- nginx.conf : configure nginx here 
+- conf/conf.d : add your web apps configuration here
+
+### mod security configuration
+- modsecurity.conf : configure mod security here
+- main.conf : configure mod security rules here
+- conf/oswap_crs : add git clone of oswap crs 
+
 
 ## Prerequisites
 - Docker

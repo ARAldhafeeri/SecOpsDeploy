@@ -15,6 +15,8 @@ RUN apk add git \
   libxml2-dev \
   linux-headers
 
+# add yajl library to enable json logging in modsecurity
+RUN apk add yajl-dev
 # Compiling modsecurity code
 RUN git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity && \
   cd ModSecurity && \
