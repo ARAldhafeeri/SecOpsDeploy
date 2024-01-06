@@ -27,6 +27,42 @@ The purpose of this layer is to protect the web application from attacks such as
 - Node Exporter: Node Exporter as a host metrics collector
 - Promtail : Promtail as a client for like , log collector from various nodes
 
+## collect logs from apps layer :
+1. install loki driver on docker host
+    ```sh
+    docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+    ```
+2. add following configuration to docker service:
+```
+  labels:
+      - "com.docker.compose.service=nginx"
+      - "com.docker.compose.project=secopsdeploy"
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
+        loki-external-labels: job=nginx,owner=admin,environment=development
+```
+labels will be used to filter logs in loki
+logging driver will send logs to loki
+
+## push logs from remote host to loki:
+1. install promtail on remote host
+2. add following configuration to promtail.yml
+```
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+    filename: /tmp/positions.yaml
+
+clients:
+    - url: http://loki:3100/loki/api/v1/push
+```
+
+
+
 ## Prerequisites
 - Docker
 
